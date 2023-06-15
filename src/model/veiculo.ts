@@ -9,4 +9,8 @@ export class Veiculo extends AbstractEntity{
     cor! : Cor
     tipo! : Tipo
     ano! : Number
+
+    constructor(){
+        super()
+    }
 }

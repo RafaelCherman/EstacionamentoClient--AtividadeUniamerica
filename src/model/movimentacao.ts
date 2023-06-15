@@ -17,4 +17,8 @@ export class Movimentacao extends AbstractEntity{
     valorTotal! : Number
     valorHora! : Number
     valorHoraMulta! : Number
+
+    constructor(){
+        super()
+    }
 }

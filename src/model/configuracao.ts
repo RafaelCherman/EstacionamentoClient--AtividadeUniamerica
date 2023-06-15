@@ -11,4 +11,9 @@ export class Configuracao extends AbstractEntity{
     vagasMoto! : Number
     vagasCarro! : Number
     vagasVan! : Number
+
+    constructor(){
+        super()
+    }
+    
 }

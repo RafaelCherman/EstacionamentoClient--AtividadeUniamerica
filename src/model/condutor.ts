@@ -9,6 +9,8 @@ export class Condutor extends AbstractEntity {
     tempoDescontoHora! : Number
     tempoDescontoMinuto! : Number
 
-
-
+    constructor(){
+        super()
+    }
+    
 }
