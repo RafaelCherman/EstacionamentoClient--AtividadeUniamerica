@@ -1,8 +1,6 @@
 import axios, {AxiosInstance} from "axios";
 import { Condutor } from "@/model/condutor";
 
-//(await this.axiosClient.get<COndutor>(`/${id}`)).data
-
 export class CondutorClient {
 
     private axiosClient: AxiosInstance;
@@ -55,7 +53,7 @@ export class CondutorClient {
 
     public async editar(id: number, condutor: Condutor) : Promise<string> {
         try {
-            return (await this.axiosClient.post<string>(`/${id}`, condutor)).data;
+            return (await this.axiosClient.put<string>(`/${id}`, condutor)).data;
         } 
         catch (error:any) {
             return Promise.reject(error.response);
