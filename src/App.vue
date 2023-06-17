@@ -1,9 +1,13 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link> |
-    <router-link to="/marca">Marcas</router-link>
-  </nav>
+  
+  
+      <div class="header">
+        <nav>
+          <router-link to="/">Home</router-link>
+          <router-link to="/marca">Marcas</router-link>
+        </nav>
+      </div>
+
   <router-view/>
 </template>
 
@@ -26,15 +30,41 @@ $prefix: "mo-";
 }
 
 nav {
-  padding: 30px;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+
 
   a {
+    margin: 15px;
     font-weight: bold;
-    color: #2c3e50;
+    color: white;
+    font-size: 20px;
+    text-decoration: none;
 
     &.router-link-exact-active {
       color: #42b983;
     }
+
+    &:hover
+    {
+      transition: all 0.25s;
+      border-radius: 2px;
+      background-color: rgb(100, 99, 99);
+    }
   }
+  
+}
+
+.header
+{
+  background-color: grey;
+  width: 100%;
+  margin: 0px;
+  
+  display: flex;
+  justify-content: start;
+  align-items: center;
 }
 </style>
+
