@@ -35,7 +35,7 @@ export class MovimentacaoClient {
 
     public async findAberto() : Promise<Movimentacao[]> {
         try {
-            return (await this.axiosClient.get<Movimentacao[]>(`/aberto`)).data;
+            return (await this.axiosClient.get<Movimentacao[]>('/aberto')).data;
         } 
         catch (error:any) {
             return Promise.reject(error.response);
