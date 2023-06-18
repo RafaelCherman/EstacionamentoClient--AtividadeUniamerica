@@ -7,7 +7,7 @@
       </div>
       <div class="col-md-4 offset-md-4">
         <button type="button" class="btn btn-success">
-          <router-link class="nova" to="/">Registrar Nova Entrada</router-link>
+          <router-link class="nova" to="/movimentacaocadastra">Registrar Nova Entrada</router-link>
         </button>
       </div>
     </div>
