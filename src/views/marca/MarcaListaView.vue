@@ -23,7 +23,6 @@
           <tr>
             <td>{{ item.nome }}</td>
             <td class="opcs">
-                <button type="button" class="btn btn-info">Detalhar</button>
                 <button type="button" class="btn btn-warning">Editar</button>
                 <button type="button" class="btn btn-danger">Excluir</button>
             </td>
@@ -36,7 +35,8 @@
   <script lang="ts">
   import { defineComponent } from 'vue';
     import { Marca } from '@/model/marca';  
-    import { MarcaClient } from '@/client/marcaClient' 
+    import { MarcaClient } from '@/client/marcaClient';
+    
   export default defineComponent({
     name: 'HomeView',
     components: {
@@ -55,9 +55,10 @@
         .then(
           success => {
             this.lista = Object.assign([], success);
-          },
-          error => console.log(error)
-        )
+        })
+        .catch(error => {
+          console.log(error);
+        })
       },
       papel()
       {

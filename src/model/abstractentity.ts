@@ -1,6 +1,6 @@
 export class AbstractEntity {
     
-    id! : Number
+    id! : number
     dataCriacao! : Date
     dataModificacao! : Date
     status! : boolean 

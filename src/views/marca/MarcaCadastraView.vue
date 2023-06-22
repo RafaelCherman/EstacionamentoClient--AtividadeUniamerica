@@ -21,6 +21,16 @@
 </template>
 
 <script lang="ts">
+//router :to="{ name{ },query{}}"
+//computed: id (){ return
+//this.$router.query.id}
+
+//v-disabled  >  :disabled    <
+
+
+
+//<input type="text" class="form-control" id="inputNome" v-model="marca.nome">
+//<button type="submit" class="btn btn-success" @click="onClickCadastrar()">Cadastrar</button>
 
 </script>
 

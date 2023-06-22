@@ -1,5 +1,7 @@
 import axios, {AxiosInstance} from "axios";
 import { Movimentacao} from "@/model/movimentacao";
+import { Veiculo } from "@/model/veiculo";
+import { Condutor } from "@/model/condutor";
 
 export class MovimentacaoClient {
 
@@ -14,6 +16,23 @@ export class MovimentacaoClient {
         )
     }
 
+    public async findVeiculoByPlaca(placa: string) : Promise<Veiculo> {
+        try {
+            return (await this.axiosClient.get<Veiculo>(`/placa/${placa}`)).data;
+        } 
+        catch (error:any) {
+            return Promise.reject(error.response);
+        }
+    }
+
+    public async findCondutorByCpf(cpf: string) : Promise<Condutor> {
+        try {
+            return (await this.axiosClient.get<Condutor>(`/cpf/${cpf}`)).data;
+        } 
+        catch (error:any) {
+            return Promise.reject(error.response);
+        }
+    }
 
     public async findById(id: number) : Promise<Movimentacao> {
         try {
@@ -44,7 +63,7 @@ export class MovimentacaoClient {
 
     public async cadastrar(movimentacao: Movimentacao) : Promise<string> {
         try {
-            return (await this.axiosClient.post<string>('/', movimentacao)).data;
+            return (await this.axiosClient.post<string>(``, movimentacao)).data;
         } 
         catch (error:any) {
             return Promise.reject(error.response);

@@ -3,7 +3,7 @@
   
       <div class="row">
         <div class="col-md-4">
-          <p class="titulo">Veiculos</p>
+          <p class="titulo">Movimentações</p>
         </div>
         <div class="col-md-4 offset-md-4">
           <button type="button" class="btn btn-success">
@@ -29,7 +29,6 @@
             <td>{{ item.entrada }}</td>
             <td>{{ item.saida }}</td>
             <td class="opcs">
-                <button type="button" class="btn btn-info">Detalhar</button>
                 <button type="button" class="btn btn-warning">Editar</button>
                 <button type="button" class="btn btn-danger">Desativar</button>
             </td>

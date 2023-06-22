@@ -12,11 +12,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'marca-lista',
     component: () => import('../views/marca/MarcaListaView.vue')
   },
-  {
+  /*{
     path: '/marcacadastra',
     name: 'marca-cadastra',
     component: () => import('../views/marca/MarcaCadastraView.vue')
-  },
+  },*/
   {
     path: '/modelo',
     name: 'modelo-lista',
@@ -35,7 +35,19 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/condutorcadastra',
     name: 'condutor-cadastra',
-    component: () => import('../views/condutor/CondutorCadastraView.vue')
+    component: () => import('../views/condutor/CondutorCadastraView.vue'),
+    children: [
+      {
+        path: '/condutorcadastra',
+        name: 'condutor-cadastra-editar',
+        component: () => import('../views/condutor/CondutorCadastraView.vue')
+      },
+      {
+        path: '/condutorcadastra',
+        name: 'condutor-cadastra-deletar',
+        component: () => import('../views/condutor/CondutorCadastraView.vue')
+      }
+    ]
   },
   {
     path: '/veiculo',
@@ -55,7 +67,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/movimentacaocadastra',
     name: 'movimentacao-cadastra',
-    component: () => import('../views/movimentacao/MovimentacaoCadastraView.vue')
+    component: () => import('@/views/movimentacao/MovimentacaoCadastraView.vue')
   }
 ]
 

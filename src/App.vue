@@ -50,12 +50,6 @@ nav {
       color: #42b983;
     }
 
-    &:hover
-    {
-      transition: all 0.25s;
-      border-radius: 2px;
-      background-color: rgb(100, 99, 99);
-    }
   }
   
 }

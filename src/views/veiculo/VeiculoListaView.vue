@@ -23,7 +23,6 @@
           <tr>
             <td>{{ item.placa }}</td>
             <td class="opcs">
-                <button type="button" class="btn btn-info">Detalhar</button>
                 <button type="button" class="btn btn-warning">Editar</button>
                 <button type="button" class="btn btn-danger">Excluir</button>
             </td>

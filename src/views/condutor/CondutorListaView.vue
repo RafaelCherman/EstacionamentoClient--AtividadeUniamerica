@@ -25,9 +25,14 @@
             <td>{{ item.nome }}</td>
             <td>{{ item.cpf }}</td>
             <td class="opcs">
-                <button type="button" class="btn btn-info">Detalhar</button>
-                <button type="button" class="btn btn-warning">Editar</button>
-                <button type="button" class="btn btn-danger">Excluir</button>
+                <router-link type="button" class="btn btn-warning"
+                :to="{name: 'condutor-cadastra-editar', query: {id: item.id, form: 'editar'}}">
+                  Editar
+                </router-link>
+                <router-link type="button" class="btn btn-danger"
+                :to="{name: 'condutor-cadastra-deletar', query: {id: item.id, form: 'deletar'}}">
+                  Excluir
+                </router-link>
             </td>
           </tr>
         </tbody>
