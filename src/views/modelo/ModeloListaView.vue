@@ -1,49 +1,70 @@
 <template>
-    <div class="home container">
+  <nav-component></nav-component>
   
-      <div class="row">
-        <div class="col-md-4">
-          <p class="titulo">Modelos</p>
-        </div>
-        <div class="col-md-4 offset-md-4">
-          <button type="button" class="btn btn-success">
-            <router-link class="nova" to="/modelocadastra">Cadastrar Novo Modelo</router-link>
-          </button>
-        </div>
+    <div class="container">
+  
+    <div class="row">
+      <div class="col-md-4">
+        <p class="titulo">Modelos</p>
       </div>
-  
-      <table class="table table-hover table-bordered">
-        <thead>
-          <tr>
-            <th>Nome</th>
-            <th>Marca</th>
-            <th>Opções</th>
-          </tr>
-        </thead>
-        <tbody v-for="item in lista">
-          <tr>
-            <td>{{ item.nome }}</td>
-            <td>{{ item.marca.nome }}</td>
-            <td class="opcs">
-                <button type="button" class="btn btn-warning">Editar</button>
-                <button type="button" class="btn btn-danger">Excluir</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="col-md-4 offset-md-4">
+          <router-link type="button" class="btn btn-success" to="/modelocadastra">
+            Cadastrar Novo Modelo
+          </router-link>
+      </div>
     </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <table class="table table-bordered">
+          <thead class="table-secondary">
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Status</th>
+              <th scope="col">Nome</th>
+              <th scope="col">Marca</th>
+              <th scope="col">Opções</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in lista" :key="item.id">
+              <td class="col-md-1">
+                <span> {{ item.id }} </span>
+              </td>
+              <td class="col-md-1">
+                <span v-if="item.ativo" class="badge text-bg-success" >Ativo</span>
+                <span v-if="!item.ativo" class="badge text-bg-warning">Inativo</span>
+              </td>
+              <td class="col-md-4">{{ item.nome }}</td>
+              <td class="col-md-4">{{ item.marca.nome }}</td>
+              <td class="col-md-2">
+                <opcs-component class="btn-warning" :botao="'Editar'" :modo="'editar'" :url="'modelo'" :id="item.id"></opcs-component>
+                <opcs-component class="btn-danger" :botao="'Deletar'" :modo="'deletar'" :url="'modelo'" :id="item.id"></opcs-component>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  
+    
   </template>
   
   <script lang="ts">
   import { defineComponent } from 'vue';
     import { Modelo } from '@/model/modelo';
     import { ModeloClient } from '@/client/modeloClient';
+    import NavComponent from '@/components/NavComponent.vue';
+    import OpcsComponent from '@/components/OpcsComponent.vue'; 
     
         
   export default defineComponent({
     name: 'ModeloListaView',
     components: {
-      
+      NavComponent,
+      OpcsComponent
     },
     data(){
       return{
@@ -76,11 +97,6 @@
   
 <style scoped lang="scss">
   
-    .nova{
-      color: white;
-      text-decoration: none;
-    }
-  
     .titulo
     {
       font-weight: bold;
@@ -91,21 +107,11 @@
     {
       margin: 50px;
     }
-  
-    .row
-    {
-      display: flex;
-      align-items: center;
-    }
 
-    .opcs
-    {
-        width: 50%;
-    }
 
     td .btn
     {
-        margin-left: 20px;
+        margin-left: 5px;
     }
   
 </style>

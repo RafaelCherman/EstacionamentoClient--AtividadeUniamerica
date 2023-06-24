@@ -1,52 +1,71 @@
 <template>
-    <div class="home container">
+  <nav-component></nav-component>
   
-      <div class="row">
-        <div class="col-md-4">
-          <p class="titulo">Movimentações</p>
-        </div>
-        <div class="col-md-4 offset-md-4">
-          <button type="button" class="btn btn-success">
-            <router-link class="nova" to="/movimentacaocadastra">Registrar Nova Movimentacao</router-link>
-          </button>
-        </div>
+    <div class="container">
+  
+    <div class="row">
+      <div class="col-md-4">
+        <p class="titulo">Movimentações</p>
       </div>
-  
-      <table class="table table-hover table-bordered">
-        <thead>
-          <tr>
-            <th>Veiculo</th>
-            <th>Condutor</th>
-            <th>Entrada</th>
-            <th>Saida</th>
-            <th>Opções</th>
-          </tr>
-        </thead>
-        <tbody v-for="item in lista">
-          <tr>
-            <td>{{ item.veiculo.placa }}</td>
-            <td>{{ item.condutor.nome }}</td>
-            <td>{{ item.entrada }}</td>
-            <td>{{ item.saida }}</td>
-            <td class="opcs">
-                <button type="button" class="btn btn-warning">Editar</button>
-                <button type="button" class="btn btn-danger">Desativar</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="col-md-4 offset-md-4">
+          <router-link type="button" class="btn btn-success" to="/movimentacaocadastra">
+            Registrar nova movimentação
+          </router-link>
+      </div>
     </div>
-  </template>
+
+    <div class="row">
+      <div class="col-md-12">
+        <table class="table table-bordered">
+          <thead class="table-secondary">
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Status</th>
+              <th scope="col">Condutor</th>
+              <th scope="col">Veiculo</th>
+              <th scope="col">Entrada</th>
+              <th scope="col">Saida</th>
+              <th scope="col">Opções</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in lista" :key="item.id">
+              <td class="col-md-1">
+                <span> {{ item.id }} </span>
+              </td>
+              <td class="col-md-1">
+                <span v-if="item.ativo" class="badge text-bg-success" >Ativo</span>
+                <span v-if="!item.ativo" class="badge text-bg-warning">Inativo</span>
+              </td>
+              <td class="col-md-2">{{ item.condutor.cpf }}</td>
+              <td class="col-md-2">{{ item.veiculo.placa }}</td>
+              <td class="col-md-2">{{ item.entrada }}</td>
+              <td class="col-md-2">{{ item.saida }}</td>
+              <td class="col-md-2">
+                <opcs-component class="btn-warning" :botao="'Editar'" :modo="'editar'" :url="'movimentacao'" :id="item.id"></opcs-component>
+                <opcs-component class="btn-danger" :botao="'Deletar'" :modo="'deletar'" :url="'movimentacao'" :id="item.id"></opcs-component>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</template>
+  
   
 <script lang="ts">
     import { defineComponent } from 'vue';
     import { Movimentacao } from '@/model/movimentacao';
     import { MovimentacaoClient } from '@/client/movimentacaoClient';
+    import NavComponent from '@/components/NavComponent.vue';
+    import OpcsComponent from '@/components/OpcsComponent.vue';
 
     export default defineComponent({
         name: 'MovimentacaoListaView',
         components: {
-      
+          NavComponent,
+          OpcsComponent
         },
         data(){
             return{
@@ -79,12 +98,7 @@
   
 <style scoped lang="scss">
   
-    .nova{
-      color: white;
-      text-decoration: none;
-    }
-  
-    .titulo
+  .titulo
     {
       font-weight: bold;
       font-size: 30px;
@@ -94,22 +108,11 @@
     {
       margin: 50px;
     }
-  
-    .row
-    {
-      display: flex;
-      align-items: center;
-    }
 
-    .opcs
-    {
-        width: 50%;
-    }
 
     td .btn
     {
-        margin-left: 20px;
-    }
-  
+        margin-left: 5px;
+    }  
 </style>
   

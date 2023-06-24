@@ -1,5 +1,6 @@
 import axios, {AxiosInstance} from "axios";
 import { Veiculo } from "@/model/veiculo";
+import { Modelo } from "@/model/modelo";
 
 export class VeiculoClient {
 
@@ -14,6 +15,14 @@ export class VeiculoClient {
         )
     }
 
+    public async findModeloByNome(nome: string) : Promise<Modelo> {
+        try {
+            return (await this.axiosClient.get<Modelo>(`/modelo/${nome}`)).data;
+        } 
+        catch (error:any) {
+            return Promise.reject(error.response);
+        }
+    }
 
     public async findById(id: number) : Promise<Veiculo> {
         try {

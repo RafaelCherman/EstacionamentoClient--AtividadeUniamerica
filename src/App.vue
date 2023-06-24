@@ -1,17 +1,4 @@
 <template>
-  
-  
-      <div class="header">
-        <nav>
-          <router-link to="/">Home</router-link>
-          <router-link to="/marca">Marcas</router-link>
-          <router-link to="/modelo">Modelos</router-link>
-          <router-link to="/condutor">Condutores</router-link>
-          <router-link to="/veiculo">Veiculos</router-link>
-          <router-link to="/movimentacao">Movimentações</router-link>
-        </nav>
-      </div>
-
   <router-view/>
 </template>
 

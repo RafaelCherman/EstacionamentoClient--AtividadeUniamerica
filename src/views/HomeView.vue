@@ -1,36 +1,55 @@
 <template>
-  <div class="home container">
-
+  <nav-component></nav-component>
+  
+  <div class="container">
+  
     <div class="row">
       <div class="col-md-4">
         <p class="titulo">Movimentações Abertas</p>
       </div>
       <div class="col-md-4 offset-md-4">
-        <button type="button" class="btn btn-success">
-          <router-link class="nova" to="/movimentacaocadastra">Registrar Nova Entrada</router-link>
-        </button>
+          <router-link type="button" class="btn btn-success" to="/movimentacaocadastra">
+            Registrar Nova Entrada
+          </router-link>
       </div>
     </div>
 
-    <table class="table table-hover table-bordered">
-      <thead>
-        <tr>
-          <th>Condutor</th>
-          <th>Placa</th>
-          <th>Entrada</th>
-          <th>Registrar Saida</th>
-        </tr>
-      </thead>
-      <tbody v-for="item in lista">
-        <tr>
-          <td>{{ item.condutor.nome }}</td>
-          <td>{{ item.veiculo.placa }}</td>
-          <td>{{ item.entrada }}</td>
-          <td class="opcs"><button type="button" class="btn btn-success">Sair</button></td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="row">
+      <div class="col-md-12">
+        <table class="table table-bordered">
+          <thead class="table-secondary">
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Status</th>
+              <th scope="col">Condutor</th>
+              <th scope="col">Veiculo</th>
+              <th scope="col">Entrada</th>
+              <th scope="col">Opções</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in lista" :key="item.id">
+              <td class="col-md-1">
+                <span> {{ item.id }} </span>
+              </td>
+              <td class="col-md-1">
+                <span v-if="item.ativo" class="badge text-bg-success" >Ativo</span>
+                <span v-if="!item.ativo" class="badge text-bg-warning">Inativo</span>
+              </td>
+              <td class="col-md-3">{{ item.condutor.cpf }}</td>
+              <td class="col-md-2">{{ item.veiculo.placa }}</td>
+              <td class="col-md-2">{{ item.entrada }}</td>
+              <td class="col-md-2">
+                <button class="btn-danger btn btn-sm">Sair</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
+ 
+  
 </template>
 
 <script lang="ts">
@@ -39,11 +58,12 @@ import { defineComponent } from 'vue';
 import { Movimentacao } from '@/model/movimentacao';
 
 import { MovimentacaoClient } from '@/client/movimentacaoClient';
+import NavComponent from '@/components/NavComponent.vue';
 
 export default defineComponent({
   name: 'HomeView',
   components: {
-    
+    NavComponent
   },
   data(){
     return{
@@ -76,32 +96,15 @@ export default defineComponent({
 
 <style scoped lang="scss">
 
-  .nova{
-    color: white;
-    text-decoration: none;
-  }
-
-  .titulo
-  {
-    font-weight: bold;
-    font-size: 30px;
-    text-decoration: none;
-  }
-
-  .container
-  {
-    margin: 50px;
-  }
-
-  .row
-  {
-    display: flex;
-    align-items: center;
-  }
-
-  .opcs
+.titulo
     {
-        width: 20%;
+      font-weight: bold;
+      font-size: 30px;
+    }
+  
+    .container
+    {
+      margin: 50px;
     }
 
 </style>

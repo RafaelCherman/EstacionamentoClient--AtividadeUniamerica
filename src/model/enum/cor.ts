@@ -1,3 +1,8 @@
 export enum Cor {
-    azul, amarelo, prata, preto, vermelho, branco
+    Azul = 'AZUL',
+    Amarelo = 'AMARELO',
+    Prata = 'PRATA',
+    Preto = 'PRETO',
+    Vermelho = 'VERMELHO',
+    Branco = 'BRANCO'
 }

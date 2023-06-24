@@ -1,27 +1,66 @@
 <template>
+    <nav-component></nav-component>
+    
     <div class="container">
         <div class="row">
             <div class="col-md-4 offset-md-4">
-                <p class="titulo">Nova Movimentacão</p>
+                <p class="titulo">Movimentação</p>
             </div>
         </div>
-        
+
         <div class="row">
-            <div class="col-md-6 offset-md-3">
+            <div class="col-md-8 offset-md-2 text-start">
+                <label for="inputNome">CPF do Condutor</label>
+                <select :disabled="this.form === 'deletar' ? '' : disabled" class="form-select" v-model="condutor.cpf" @focusout="findCondutor(condutor.cpf)">
+                    <option v-for="item in listCondutor" :value="item.cpf">{{ item.cpf }}</option>
+                </select>
+            </div>   
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 offset-md-2 text-start">
+                <label>Nome</label>
+                <input disabled type="text" class="form-control" v-model="condutor.nome">
+            </div>
+            <div class="col-md-4 text-start">
+                <label>Telefone</label>
+                <input disabled type="text" class="form-control" v-model="condutor.telefone">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8 offset-md-2 text-start">
+                <label for="inputNome">Placa do Veiculo</label>
+                <select :disabled="this.form === 'deletar' ? '' : disabled" class="form-select" v-model="veiculo.placa" @focusout="findVeiculo(veiculo.placa)">
+                    <option v-for="item in listVeiculo" :value="item.placa">{{ item.placa }}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 offset-md-2 text-start">
+                <label>Modelo</label>
+                <input disabled type="text" class="form-control" v-model="modelo.nome">
+            </div>
+            <div class="col-md-4 text-start">
+                <label>Cor</label>
+                <input disabled type="text" class="form-control" v-model="veiculo.cor">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3 offset-md-3">
+                <router-link class="btn btn-info" type="button" to="/movimentacao">Voltar</router-link>
+            </div>
+            <div class="col-md-3">
                 
-                    <div class="form-group">
-                        <label for="inputVeiculo">Veiculo</label>
-                        <input type="text" class="form-control" id="inputVeiculo" >
-                    </div>
-                    <div class="form-group">
-                        <label for="inputCondutor">Condutor</label>
-                        <input type="text" class="form-control" id="inputCondutor" v-model="condutor.cpf" @focusout="findCondutor(condutor.cpf)">
-                    </div>
-                    <button type="submit" class="btn btn-success">Cadastrar</button>
-                
+                <button v-if="this.form === undefined" class="btn btn-success" @click="onClickCadastrar">Cadastrar</button>
+                <button v-if="this.form === 'deletar'" class="btn btn-danger" @click="onClickExcluir">Excluir</button>
+                <button v-if="this.form === 'editar'" class="btn btn-warning" @click="onClickEditar">Editar</button>
             </div>
         </div>
     </div>
+    
 </template>
 
 <script lang="ts">
@@ -30,16 +69,28 @@
     import { Movimentacao } from '@/model/movimentacao'
     import { MovimentacaoClient } from '@/client/movimentacaoClient'
     import { Condutor } from '@/model/condutor'
+    import { CondutorClient } from '@/client/condutorClient'
     import { Veiculo } from '@/model/veiculo'
+    import { VeiculoClient } from '@/client/veiculoClient'
+    import { Modelo } from '@/model/modelo'
+    import NavComponent from '@/components/NavComponent.vue'
 
     export default defineComponent({
         name: 'MovimentacaoCadastra',
+        components:{
+            NavComponent
+        },
         data(){
             return{
                 movimentacaoClient: new MovimentacaoClient(),
                 movimentacao: new Movimentacao(),
+                condutorClient: new CondutorClient(),
                 condutor: new Condutor(),
-                veiculo: new Veiculo()
+                listCondutor: new Array<Condutor>(),
+                veiculoClient: new VeiculoClient(),
+                veiculo: new Veiculo(),
+                listVeiculo: new Array<Veiculo>(),
+                modelo: new Modelo()
             }
         },
         computed: {
@@ -51,6 +102,9 @@
             }
         },
         mounted: function(){
+
+            this.getListCondutor();
+            this.getListVeiculo();
         
             if(this.id !== undefined)
             {
@@ -60,9 +114,13 @@
         },
         methods: {
             onClickCadastrar(){
+                this.movimentacao.entrada = new Date();
                 this.movimentacaoClient.cadastrar(this.movimentacao)
                 .then(success => {
                     this.movimentacao = new Movimentacao();
+                    this.condutor = new Condutor();
+                    this.veiculo = new Veiculo();
+                    this.modelo = new Modelo();
                 })
                 .catch(error => {
                     console.log(error);
@@ -73,6 +131,9 @@
                 this.movimentacaoClient.editar(this.movimentacao.id, this.movimentacao)
                 .then(success => {
                     this.movimentacao = new Movimentacao();
+                    this.condutor = new Condutor();
+                    this.veiculo = new Veiculo();
+                    this.modelo = new Modelo();
                 })
                 .catch(error => {
                     console.log(error);
@@ -92,6 +153,8 @@
                 this.movimentacaoClient.findById(id)
                 .then(success => {
                     this.movimentacao = success
+                    this.condutor = success.condutor
+                    this.veiculo = success.veiculo
                 })
                 .catch(error => {
                     console.log(error);
@@ -101,8 +164,42 @@
             {
                 this.movimentacaoClient.findCondutorByCpf(cpf)
                 .then(success => {
-                    console.log(success.nome);
+                    this.movimentacao.condutor = success;
+                    this.condutor = success;
+                    console.log(this.movimentacao.condutor.nome);
                     console.log(success.telefone);
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+            },
+            findVeiculo(placa: string)
+            {
+                this.movimentacaoClient.findVeiculoByPlaca(placa)
+                .then(success => {
+                    this.movimentacao.veiculo = success;
+                    this.veiculo = success;
+                    this.modelo = success.modelo;
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+            },
+            getListCondutor()
+            {
+                this.condutorClient.findAtivo()
+                .then(success => {
+                    this.listCondutor = success;
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+            },
+            getListVeiculo()
+            {
+                this.veiculoClient.findAtivo()
+                .then(success => {
+                    this.listVeiculo = success;
                 })
                 .catch(error => {
                     console.log(error);
@@ -118,31 +215,21 @@
     .container
     {
       margin: 50px;
+      background: lightgray;
+      border-radius: 20px;
     }
-    
-    form{
-        display: flex;
-        flex-direction: column;
-        align-items: space-between;
-    }
+
     form .btn{
         margin-top: 20px;
         width: 100px;
     }
 
-    form .form-group
-    {
-        display: flex;
-        flex-direction: column;
-        align-items: start;
-    }
 
     .titulo
     {
       font-weight: bold;
       font-size: 30px;
     }
-
     
 
 </style>

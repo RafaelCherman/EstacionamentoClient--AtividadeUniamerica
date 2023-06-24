@@ -1,46 +1,74 @@
 <template>
-    <div class="home container">
+  <nav-component></nav-component>
   
-      <div class="row">
-        <div class="col-md-4">
-          <p class="titulo">Veiculos</p>
-        </div>
-        <div class="col-md-4 offset-md-4">
-          <button type="button" class="btn btn-success">
-            <router-link class="nova" to="/veiculocadastra">Cadastrar Novo Veiculo</router-link>
-          </button>
-        </div>
+  <div class="container">
+  
+    <div class="row">
+      <div class="col-md-4">
+        <p class="titulo">Veiculos</p>
       </div>
-  
-      <table class="table table-hover table-bordered">
-        <thead>
-          <tr>
-            <th>Placa</th>
-            <th>Opções</th>
-          </tr>
-        </thead>
-        <tbody v-for="item in lista">
-          <tr>
-            <td>{{ item.placa }}</td>
-            <td class="opcs">
-                <button type="button" class="btn btn-warning">Editar</button>
-                <button type="button" class="btn btn-danger">Excluir</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="col-md-4 offset-md-4">
+          <router-link type="button" class="btn btn-success" to="/veiculoscadastra">
+            Cadastrar Novo Veiculo
+          </router-link>
+      </div>
     </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <table class="table table-bordered">
+          <thead class="table-secondary">
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Status</th>
+              <th scope="col">Placa</th>
+              <th scope="col">Modelo</th>
+              <th scope="col">Cor</th>
+              <th scope="col">Tipo</th>
+              <th scope="col">Opções</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in lista" :key="item.id">
+              <td class="col-md-1">
+                <span> {{ item.id }} </span>
+              </td>
+              <td class="col-md-1">
+                <span v-if="item.ativo" class="badge text-bg-success" >Ativo</span>
+                <span v-if="!item.ativo" class="badge text-bg-warning">Inativo</span>
+              </td>
+              <td class="col-md-2">{{ item.placa }}</td>
+              <td class="col-md-2">{{ item.modelo.nome }}</td>
+              <td class="col-md-2">{{ item.cor }}</td>
+              <td class="col-md-2">{{ item.tipo }}</td>
+              <td class="col-md-2">
+                <opcs-component class="btn-warning" :botao="'Editar'" :modo="'editar'" :url="'veiculo'" :id="item.id"></opcs-component>
+                <opcs-component class="btn-danger" :botao="'Deletar'" :modo="'deletar'" :url="'veiculo'" :id="item.id"></opcs-component>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  
+
+    
   </template>
   
 <script lang="ts">
     import { defineComponent } from 'vue';
     import { Veiculo } from '@/model/veiculo';
     import { VeiculoClient } from '@/client/veiculoClient';
+    import NavComponent from '@/components/NavComponent.vue';
+    import OpcsComponent from '@/components/OpcsComponent.vue';
 
     export default defineComponent({
         name: 'VeiculoListaView',
         components: {
-      
+          NavComponent,
+          OpcsComponent
         },
         data(){
             return{
@@ -73,12 +101,7 @@
   
 <style scoped lang="scss">
   
-    .nova{
-      color: white;
-      text-decoration: none;
-    }
-  
-    .titulo
+  .titulo
     {
       font-weight: bold;
       font-size: 30px;
@@ -88,21 +111,11 @@
     {
       margin: 50px;
     }
-  
-    .row
-    {
-      display: flex;
-      align-items: center;
-    }
 
-    .opcs
-    {
-        width: 50%;
-    }
 
     td .btn
     {
-        margin-left: 20px;
+        margin-left: 5px;
     }
   
 </style>
