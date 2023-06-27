@@ -8,7 +8,7 @@
         <p class="titulo">Veiculos</p>
       </div>
       <div class="col-md-4 offset-md-4">
-          <router-link type="button" class="btn btn-success" to="/veiculoscadastra">
+          <router-link type="button" class="btn btn-success" to="/veiculocadastra">
             Cadastrar Novo Veiculo
           </router-link>
       </div>
@@ -43,7 +43,7 @@
               <td class="col-md-2">{{ item.tipo }}</td>
               <td class="col-md-2">
                 <opcs-component class="btn-warning" :botao="'Editar'" :modo="'editar'" :url="'veiculo'" :id="item.id"></opcs-component>
-                <opcs-component class="btn-danger" :botao="'Deletar'" :modo="'deletar'" :url="'veiculo'" :id="item.id"></opcs-component>
+                <opcs-component v-if="item.ativo" class="btn-danger" :botao="'Deletar'" :modo="'deletar'" :url="'veiculo'" :id="item.id"></opcs-component>
               </td>
             </tr>
           </tbody>

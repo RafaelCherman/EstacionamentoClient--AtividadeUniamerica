@@ -2,11 +2,12 @@
     <div class="header">
         <nav>
             <router-link class="active" to="/">Home</router-link>
+            <router-link class="active" to="/movimentacao">Movimentações</router-link>
+            <router-link class="active" to="/condutor">Condutores</router-link>
             <router-link class="active" to="/marca">Marcas</router-link>
             <router-link class="active" to="/modelo">Modelos</router-link>
-            <router-link class="active" to="/condutor">Condutores</router-link>
             <router-link class="active" to="/veiculo">Veiculos</router-link>
-            <router-link class="active" to="/movimentacao">Movimentações</router-link>
+            <router-link class="active" to="/configuracao">Configurações</router-link>
         </nav>
     </div>
 </template>

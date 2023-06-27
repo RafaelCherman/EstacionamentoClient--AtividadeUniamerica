@@ -9,9 +9,15 @@
         </div>
 
         <div class="row">
+            <div class="col-md-12 text-start">
+                <alert-component :ativo="mensagem.ativo" :mensagem="mensagem.conteudo" :titulo="mensagem.titulo" :estilo="mensagem.estilo"></alert-component>
+            </div>
+        </div>
+
+        <div class="row">
             <div class="col-md-6 offset-md-3 text-start">
                 <label>Nome</label>
-                <input :disabled="this.form === 'deletar' ? '' : disabled" type="text" class="form-control" v-model="modelo.nome">
+                <input :disabled="this.form === 'deletar' ? '' : disabled" type="text" placeholder="Uno" class="form-control" v-model="modelo.nome">
                     
             </div>
         </div>
@@ -52,11 +58,13 @@
     import { MarcaClient } from '@/client/marcaClient'
     import { defineComponent } from 'vue'
     import NavComponent from '@/components/NavComponent.vue'
+    import AlertComponent from '@/components/AlertComponent.vue'
 
     export default defineComponent({
         name: 'MarcaCadastra',
         components:{
-            NavComponent
+            NavComponent,
+            AlertComponent
         },
         data(){
             return{
@@ -64,7 +72,13 @@
                 modelo: new Modelo(),
                 modeloClient: new ModeloClient(),
                 marcaClient: new MarcaClient(),
-                listMarca: new Array<Marca>()
+                listMarca: new Array<Marca>(),
+                mensagem: {
+                    titulo: '' as string,
+                    conteudo: '' as string,
+                    estilo: '' as string,
+                    ativo: false as boolean
+                }
             }
         },
         computed: {
@@ -94,13 +108,23 @@
                     .then(success => {
                         this.modelo = new Modelo();
                         this.marca = new Marca();
+                        this.mensagem.ativo = true;
+                        this.mensagem.conteudo = success;
+                        this.mensagem.titulo = "Parabens "
+                        this.mensagem.estilo = "alert alert-success alert-dismissible fade show";
                     })
                     .catch(error => {
-                        console.log(error);
+                        this.mensagem.ativo = true;
+                        this.mensagem.conteudo = error.data;
+                        this.mensagem.titulo = "Erro "
+                        this.mensagem.estilo = "alert alert-danger alert-dismissible fade show";
                     })
                 })
                 .catch(error => {
-                    console.log(error);
+                    this.mensagem.ativo = true;
+                    this.mensagem.conteudo = error.data;
+                    this.mensagem.titulo = "Erro "
+                    this.mensagem.estilo = "alert alert-danger alert-dismissible fade show";
                 })
 
                 
@@ -114,13 +138,23 @@
                     .then(success => {
                         this.modelo = new Modelo();
                         this.marca = new Marca();
+                        this.mensagem.ativo = true;
+                        this.mensagem.conteudo = success;
+                        this.mensagem.titulo = "Parabens "
+                        this.mensagem.estilo = "alert alert-success alert-dismissible fade show";
                     })
                     .catch(error => {
-                        console.log(error);
+                        this.mensagem.ativo = true;
+                        this.mensagem.conteudo = error.data;
+                        this.mensagem.titulo = "Erro "
+                        this.mensagem.estilo = "alert alert-danger alert-dismissible fade show";
                     })
                 })
                 .catch(error => {
-                    console.log(error);
+                    this.mensagem.ativo = true;
+                    this.mensagem.conteudo = error.data;
+                    this.mensagem.titulo = "Erro "
+                    this.mensagem.estilo = "alert alert-danger alert-dismissible fade show";
                 })
             },
             onClickExcluir(){
@@ -129,9 +163,13 @@
                 .then(success => {
                     this.modelo = new Modelo();
                     this.marca = new Marca();
+                    this.$router.push({name: 'modelo-lista'});
                 })
                 .catch(error => {
-                    console.log(error);
+                    this.mensagem.ativo = true;
+                    this.mensagem.conteudo = error.data;
+                    this.mensagem.titulo = "Erro "
+                    this.mensagem.estilo = "alert alert-danger alert-dismissible fade show";
                 })
             },
             findById(id: number){

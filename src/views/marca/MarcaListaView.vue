@@ -36,7 +36,7 @@
               <td class="col-md-8">{{ item.nome }}</td>
               <td class="col-md-2">
                 <opcs-component class="btn-warning" :botao="'Editar'" :modo="'editar'" :url="'marca'" :id="item.id"></opcs-component>
-                <opcs-component class="btn-danger" :botao="'Deletar'" :modo="'deletar'" :url="'marca'" :id="item.id"></opcs-component>
+                <opcs-component v-if="item.ativo" class="btn-danger" :botao="'Deletar'" :modo="'deletar'" :url="'marca'" :id="item.id"></opcs-component>
               </td>
             </tr>
           </tbody>

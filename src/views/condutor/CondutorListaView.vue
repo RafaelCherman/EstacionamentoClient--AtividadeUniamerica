@@ -38,7 +38,7 @@
                 <td class="col-md-4">{{ item.cpf }}</td>
                 <td class="col-md-2">
                   <opcs-component class="btn-warning" :botao="'Editar'" :modo="'editar'" :url="'condutor'" :id="item.id"></opcs-component>
-                  <opcs-component class="btn-danger" :botao="'Deletar'" :modo="'deletar'" :url="'condutor'" :id="item.id"></opcs-component>
+                  <opcs-component v-if="item.ativo" class="btn-danger" :botao="'Deletar'" :modo="'deletar'" :url="'condutor'" :id="item.id"></opcs-component>
                 </td>
               </tr>
             </tbody>

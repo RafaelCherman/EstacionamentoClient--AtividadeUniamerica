@@ -116,6 +116,23 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/movimentacao/MovimentacaoCadastraView.vue')
       }
     ]
+  },
+  {
+    path: '/configuracao',
+    name: 'configuracao-lista',
+    component: () => import('@/views/configuracao/ConfiguracaoListaView.vue')
+  },
+  {
+    path: '/configuracaocadastra',
+    name: 'configuracao-cadastra',
+    component: () => import('@/views/configuracao/ConfiguracaoCadastraView.vue'),
+    children: [
+      {
+        path: '/configuracaocadastra',
+        name: 'configuracao-cadastra-editar',
+        component: () => import('@/views/configuracao/ConfiguracaoCadastraView.vue')
+      }
+    ]
   }
 ]
 

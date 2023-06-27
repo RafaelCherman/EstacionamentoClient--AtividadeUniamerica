@@ -8,17 +8,22 @@
         </div>
 
         <div class="row">
+            <div class="col-md-12 text-start">
+                <alert-component :ativo="mensagem.ativo" :mensagem="mensagem.conteudo" :titulo="mensagem.titulo" :estilo="mensagem.estilo"></alert-component>
+            </div>
+        </div>
+    
+        <div class="row">
             <div class="col-md-6 offset-md-3 text-start">
                 <label for="inputNome">Nome</label>
-                <input :disabled="this.form === 'deletar' ? '' : disabled" type="text" class="form-control" id="inputNome" v-model="condutor.nome">
-                    
+                <input :disabled="this.form === 'deletar' ? '' : disabled" type="text" placeholder="Pedro da Silva" class="form-control" id="inputNome" v-model="condutor.nome">   
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-6 offset-md-3 text-start">
                 <label for="inputCpf">CPF</label>
-                <input :disabled="this.form === 'deletar' ? '' : disabled" type="text" class="form-control" id="inputCpf" v-model="condutor.cpf">
+                <input :disabled="this.form === 'deletar' ? '' : disabled" type="text" placeholder="999.999.999-99" class="form-control" id="inputCpf" v-model="condutor.cpf">
                     
             </div>
         </div>
@@ -26,7 +31,7 @@
         <div class="row">
             <div class="col-md-6 offset-md-3 text-start">
                 <label for="inputTelefone">Telefone</label>
-                <input :disabled="this.form === 'deletar' ? '' : disabled" type="text" class="form-control" id="inputTelefone" v-model="condutor.telefone">
+                <input :disabled="this.form === 'deletar' ? '' : disabled" type="text" placeholder="99 99999-9999" class="form-control" id="inputTelefone" v-model="condutor.telefone">
                     
             </div>
         </div>
@@ -53,16 +58,24 @@
     import { CondutorClient } from '@/client/condutorClient';
     import { defineComponent } from 'vue';
     import NavComponent from '@/components/NavComponent.vue';
+    import AlertComponent from '@/components/AlertComponent.vue';
 
     export default defineComponent({
         name: 'CondutorCadastra',
         components: {
-            NavComponent
+            NavComponent,
+            AlertComponent
         },
         data(){
             return{
                 condutor: new Condutor(),
-                condutorClient: new CondutorClient()
+                condutorClient: new CondutorClient(),
+                mensagem: {
+                    titulo: '' as string,
+                    conteudo: '' as string,
+                    estilo: '' as string,
+                    ativo: false as boolean
+                }
             }
         },
         computed: {
@@ -87,9 +100,17 @@
                 this.condutorClient.cadastrar(this.condutor)
                 .then(success => {
                     this.condutor = new Condutor();
+
+                    this.mensagem.ativo = true;
+                    this.mensagem.conteudo = success;
+                    this.mensagem.titulo = "Parabens "
+                    this.mensagem.estilo = "alert alert-success alert-dismissible fade show";
                 })
                 .catch(error => {
-                    console.log(error);
+                    this.mensagem.ativo = true;
+                    this.mensagem.conteudo = error.data;
+                    this.mensagem.titulo = "Erro "
+                    this.mensagem.estilo = "alert alert-danger alert-dismissible fade show";
                 })
             },
             onClickEditar(){
@@ -97,9 +118,17 @@
                 this.condutorClient.editar(this.condutor.id, this.condutor)
                 .then(success => {
                     this.condutor = new Condutor();
+                    
+                    this.mensagem.ativo = true;
+                    this.mensagem.conteudo = success;
+                    this.mensagem.titulo = "Parabens "
+                    this.mensagem.estilo = "alert alert-success alert-dismissible fade show";
                 })
                 .catch(error => {
-                    console.log(error);
+                    this.mensagem.ativo = true;
+                    this.mensagem.conteudo = error;
+                    this.mensagem.titulo = "Erro "
+                    this.mensagem.estilo = "alert alert-danger alert-dismissible fade show";
                 })
             },
             onClickExcluir(){
@@ -107,9 +136,15 @@
                 this.condutorClient.deletar(this.condutor.id)
                 .then(success => {
                     this.condutor = new Condutor();
+
+                    
+                    this.$router.push({name: 'condutor-lista'})
                 })
                 .catch(error => {
-                    console.log(error);
+                    this.mensagem.ativo = true;
+                    this.mensagem.conteudo = error;
+                    this.mensagem.titulo = "Erro "
+                    this.mensagem.estilo = "alert alert-danger alert-dismissible fade show";
                 })
             },
             findById(id: number){

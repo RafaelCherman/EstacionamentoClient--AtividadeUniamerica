@@ -9,9 +9,15 @@
         </div>
 
         <div class="row">
+            <div class="col-md-12 text-start">
+                <alert-component :ativo="mensagem.ativo" :mensagem="mensagem.conteudo" :titulo="mensagem.titulo" :estilo="mensagem.estilo"></alert-component>
+            </div>
+        </div>
+
+        <div class="row">
             <div class="col-md-6 offset-md-3 text-start">
                 <label>Nome</label>
-                <input :disabled="this.form === 'deletar' ? '' : disabled" type="text" class="form-control" v-model="marca.nome">                    
+                <input :disabled="this.form === 'deletar' ? '' : disabled" type="text" placeholder="Fiat" class="form-control" v-model="marca.nome">                    
             </div>
         </div>
 
@@ -47,16 +53,24 @@
     import { Marca } from '@/model/marca';
     import { MarcaClient } from '@/client/marcaClient';
     import NavComponent from '@/components/NavComponent.vue';
+    import AlertComponent from '@/components/AlertComponent.vue';
 
     export default defineComponent({
         name: 'MarcaCadastra',
         components:{
-            NavComponent
+            NavComponent,
+            AlertComponent
         },
         data(){
             return{
                 marca: new Marca(),
-                marcaClient: new MarcaClient()
+                marcaClient: new MarcaClient(),
+                mensagem: {
+                    titulo: '' as string,
+                    conteudo: '' as string,
+                    estilo: '' as string,
+                    ativo: false as boolean
+                }
             }
         },
         computed: {
@@ -80,9 +94,16 @@
                 this.marcaClient.cadastrar(this.marca)
                 .then(success => {
                     this.marca = new Marca();
+                    this.mensagem.ativo = true;
+                    this.mensagem.conteudo = success;
+                    this.mensagem.titulo = "Parabens "
+                    this.mensagem.estilo = "alert alert-success alert-dismissible fade show";
                 })
                 .catch(error => {
-                    console.log(error);
+                    this.mensagem.ativo = true;
+                    this.mensagem.conteudo = error.data;
+                    this.mensagem.titulo = "Erro "
+                    this.mensagem.estilo = "alert alert-danger alert-dismissible fade show";
                 })
             },
             onClickEditar(){
@@ -90,9 +111,16 @@
                 this.marcaClient.editar(this.marca.id, this.marca)
                 .then(success => {
                     this.marca = new Marca();
+                    this.mensagem.ativo = true;
+                    this.mensagem.conteudo = success;
+                    this.mensagem.titulo = "Parabens "
+                    this.mensagem.estilo = "alert alert-success alert-dismissible fade show";
                 })
                 .catch(error => {
-                    console.log(error);
+                    this.mensagem.ativo = true;
+                    this.mensagem.conteudo = error.data;
+                    this.mensagem.titulo = "Erro "
+                    this.mensagem.estilo = "alert alert-danger alert-dismissible fade show";
                 })
             },
             onClickExcluir(){
@@ -100,9 +128,14 @@
                 this.marcaClient.deletar(this.marca.id)
                 .then(success => {
                     this.marca = new Marca();
+                    
+                    this.$router.push({name: 'marca-lista'})
                 })
                 .catch(error => {
-                    console.log(error);
+                    this.mensagem.ativo = true;
+                    this.mensagem.conteudo = error.data;
+                    this.mensagem.titulo = "Erro "
+                    this.mensagem.estilo = "alert alert-danger alert-dismissible fade show";
                 })
             },
             findById(id: number){

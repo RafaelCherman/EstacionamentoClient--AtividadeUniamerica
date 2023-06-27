@@ -9,6 +9,12 @@
         </div>
 
         <div class="row">
+            <div class="col-md-12 text-start">
+                <alert-component :ativo="mensagem.ativo" :mensagem="mensagem.conteudo" :titulo="mensagem.titulo" :estilo="mensagem.estilo"></alert-component>
+            </div>
+        </div>
+
+        <div class="row">
             <div class="col-md-8 offset-md-2 text-start">
                 <label for="inputNome">CPF do Condutor</label>
                 <select :disabled="this.form === 'deletar' ? '' : disabled" class="form-select" v-model="condutor.cpf" @focusout="findCondutor(condutor.cpf)">
@@ -55,7 +61,7 @@
             <div class="col-md-3">
                 
                 <button v-if="this.form === undefined" class="btn btn-success" @click="onClickCadastrar">Cadastrar</button>
-                <button v-if="this.form === 'deletar'" class="btn btn-danger" @click="onClickExcluir">Excluir</button>
+                <button v-if="this.form === 'deletar'" class="btn btn-danger" @click="onClickExcluir">Desativar</button>
                 <button v-if="this.form === 'editar'" class="btn btn-warning" @click="onClickEditar">Editar</button>
             </div>
         </div>
@@ -74,11 +80,13 @@
     import { VeiculoClient } from '@/client/veiculoClient'
     import { Modelo } from '@/model/modelo'
     import NavComponent from '@/components/NavComponent.vue'
+    import AlertComponent from '@/components/AlertComponent.vue'
 
     export default defineComponent({
         name: 'MovimentacaoCadastra',
         components:{
-            NavComponent
+            NavComponent,
+            AlertComponent
         },
         data(){
             return{
@@ -90,7 +98,13 @@
                 veiculoClient: new VeiculoClient(),
                 veiculo: new Veiculo(),
                 listVeiculo: new Array<Veiculo>(),
-                modelo: new Modelo()
+                modelo: new Modelo(),
+                mensagem: {
+                    titulo: '' as string,
+                    conteudo: '' as string,
+                    estilo: '' as string,
+                    ativo: false as boolean
+                }
             }
         },
         computed: {
@@ -115,15 +129,23 @@
         methods: {
             onClickCadastrar(){
                 this.movimentacao.entrada = new Date();
+                console.log(this.movimentacao.entrada)
                 this.movimentacaoClient.cadastrar(this.movimentacao)
                 .then(success => {
                     this.movimentacao = new Movimentacao();
                     this.condutor = new Condutor();
                     this.veiculo = new Veiculo();
                     this.modelo = new Modelo();
+                    this.mensagem.ativo = true;
+                    this.mensagem.conteudo = success;
+                    this.mensagem.titulo = "Parabens "
+                    this.mensagem.estilo = "alert alert-success alert-dismissible fade show";
                 })
                 .catch(error => {
-                    console.log(error);
+                    this.mensagem.ativo = true;
+                    this.mensagem.conteudo = error.data;
+                    this.mensagem.titulo = "Erro "
+                    this.mensagem.estilo = "alert alert-danger alert-dismissible fade show";
                 })
             },
             onClickEditar(){
@@ -134,9 +156,17 @@
                     this.condutor = new Condutor();
                     this.veiculo = new Veiculo();
                     this.modelo = new Modelo();
+                    this.mensagem.ativo = true;
+                    this.mensagem.conteudo = success;
+                    this.mensagem.titulo = "Parabens "
+                    this.mensagem.estilo = "alert alert-success alert-dismissible fade show";
                 })
                 .catch(error => {
-                    console.log(error);
+                    this.mensagem.ativo = true;
+                    this.mensagem.conteudo = error.data;
+                    this.mensagem.titulo = "Erro "
+                    this.mensagem.conteudo = error;
+                    this.mensagem.estilo = "alert alert-danger alert-dismissible fade show";
                 })
             },
             onClickExcluir(){
@@ -144,9 +174,17 @@
                 this.movimentacaoClient.deletar(this.movimentacao.id)
                 .then(success => {
                     this.movimentacao = new Movimentacao();
+                    this.condutor = new Condutor();
+                    this.veiculo = new Veiculo();
+                    this.modelo = new Modelo();
+                    this.$router.push({name: 'movimentacao-lista'})
                 })
                 .catch(error => {
-                    console.log(error);
+                    this.mensagem.ativo = true;
+                    this.mensagem.conteudo = error.data;
+                    this.mensagem.titulo = "Erro "
+                    this.mensagem.conteudo = error;
+                    this.mensagem.estilo = "alert alert-danger alert-dismissible fade show";
                 })
             },
             findById(id: number){
@@ -155,6 +193,7 @@
                     this.movimentacao = success
                     this.condutor = success.condutor
                     this.veiculo = success.veiculo
+                    this.modelo = success.veiculo.modelo
                 })
                 .catch(error => {
                     console.log(error);

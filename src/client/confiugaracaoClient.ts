@@ -24,6 +24,15 @@ export class ConfiguracaoClient {
         }
     }
 
+    public async getAll() : Promise<Configuracao> {
+        try {
+            return (await this.axiosClient.get<Configuracao>(`/all`)).data;
+        } 
+        catch (error:any) {
+            return Promise.reject(error.response);
+        }
+    }
+
 
     
     public async cadastrar(configuracao: Configuracao) : Promise<string> {
